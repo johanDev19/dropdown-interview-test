@@ -21,10 +21,6 @@
   box-sizing: border-box;
 }
 
-.autoComplete__input:focus {
-  outline: none;
-}
-
 .autoComplete__menu {
   position: absolute;
   top: 39px;

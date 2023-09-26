@@ -2,15 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import "./auto-complete-styles.css";
 import { Employee } from "../../interfaces/employees";
-
-interface AutoCompleteViewProps {
-  inputValue: string;
-  filteredData: Employee[];
-  isLoading: boolean;
-  selectedOption?: string;
-  onInputChange: (value: string) => void;
-  onOptionSelect: (value: Employee) => void;
-}
+import { AutoCompleteViewProps } from "./auto-complete-interface";
 
 const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
   inputValue,
@@ -93,7 +85,7 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
         value={inputValue}
         onChange={handleInputOnChange}
         onFocus={focusInput}
-        placeholder="Type here..."
+        placeholder="Enter the employee name"
       />
       {showOptions && (
         <>
@@ -107,7 +99,7 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
 
                 return (
                   <li
-                    key={index}
+                    key={`${item.id}-${index}`}
                     data-value={item.id}
                     onClick={handleOptionSelect}
                   >
@@ -124,7 +116,7 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
             </ul>
           )}
           {!isLoading && inputValue.length > 0 && !filteredData.length && (
-            <div>No hay coincidencias</div>
+            <div>No match</div>
           )}
         </>
       )}
