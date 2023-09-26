@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 
 import "./auto-complete-styles.css";
+import { Employee } from "../../interfaces/employees";
 
 interface AutoCompleteViewProps {
   inputValue: string;
-  filteredData: string[];
+  filteredData: Employee[];
   isLoading: boolean;
   selectedOption?: string;
   onInputChange: (value: string) => void;
-  onOptionSelect: (value: string) => void;
+  onOptionSelect: (value: Employee) => void;
 }
 
 const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
@@ -28,9 +29,14 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
   };
 
   const handleOptionSelect = (e: React.MouseEvent<HTMLLIElement>) => {
-    onOptionSelect(e.currentTarget.dataset.value || "");
-    setShowCloseButton(true);
-    setShowOptions(false);
+    const option: Employee | undefined = filteredData.find(
+      (item) => item.id === Number(e.currentTarget.dataset.value)
+    );
+    if (option) {
+      onOptionSelect(option);
+      setShowCloseButton(true);
+      setShowOptions(false);
+    }
   };
 
   const handleClearInput = () => {
@@ -73,7 +79,7 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
           {filteredData.length > 0 && (
             <ul className="autoComplete__menu">
               {filteredData.map((item, index) => {
-                const startIndex = item
+                const startIndex = item.name
                   .toLowerCase()
                   .indexOf(inputValue.toLowerCase());
                 const endIndex = startIndex + inputValue.length;
@@ -81,22 +87,22 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
                 return (
                   <li
                     key={index}
-                    data-value={item}
+                    data-value={item.id}
                     onClick={handleOptionSelect}
                   >
                     {startIndex > 0 && (
-                      <span>{item.substring(0, startIndex)}</span>
+                      <span>{item.name.substring(0, startIndex)}</span>
                     )}
-                    <strong>{item.substring(startIndex, endIndex)}</strong>
-                    {endIndex < item.length && (
-                      <span>{item.substring(endIndex)}</span>
+                    <strong>{item.name.substring(startIndex, endIndex)}</strong>
+                    {endIndex < item.name.length && (
+                      <span>{item.name.substring(endIndex)}</span>
                     )}
                   </li>
                 );
               })}
             </ul>
           )}
-          {!isLoading && inputValue.length > 0 && filteredData.length === 0 && (
+          {!isLoading && inputValue.length > 0 && !filteredData.length && (
             <div>No hay coincidencias</div>
           )}
         </>

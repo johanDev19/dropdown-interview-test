@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
 import AutoCompleteView from "./auto-complete-view";
-import mockData from "../../mocks/input-values";
 import { getEmployees } from "../../services/employees";
+import { Employee } from "../../interfaces/employees";
 
 const AutoCompleteContainer: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
-  const [filteredData, setFilteredData] = useState<string[]>(mockData);
+  const [filteredData, setFilteredData] = useState<Employee[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleFilter = async (value: string) => {
@@ -16,7 +16,7 @@ const AutoCompleteContainer: React.FC = () => {
     }
 
     const filteredDataMutation = filteredData.filter((item) => {
-      return item.toLowerCase().includes(value.toLowerCase());
+      return item.name.toLowerCase().includes(value.toLowerCase());
     });
     setFilteredData(filteredDataMutation);
 
@@ -24,7 +24,9 @@ const AutoCompleteContainer: React.FC = () => {
     setInputValue(value);
   };
 
-  const handleOptionSelect = (value: string) => setInputValue(value);
+  const handleOptionSelect = (value: Employee) => {
+    setInputValue(value.name);
+  };
 
   const getEmployeeList = async () => {
     const employees = await getEmployees();
