@@ -1,5 +1,7 @@
+import AutoComplete from "./components/auto-complete";
+
 function App() {
-  return <>deel</>;
+  return <AutoComplete />;
 }
 
 export default App;
