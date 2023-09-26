@@ -1,4 +1,4 @@
-import { Employee } from "../../interfaces/employees";
+import { Employee } from "../../interfaces/employees.interface";
 
 export interface AutoCompleteViewProps {
   inputValue: string;

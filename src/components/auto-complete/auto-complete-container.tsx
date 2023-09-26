@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import AutoCompleteView from "./auto-complete-view";
 import { getEmployees } from "../../services/employees";
-import { Employee } from "../../interfaces/employees";
+import { Employee } from "../../interfaces/employees.interface";
 
 const AutoCompleteContainer: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");

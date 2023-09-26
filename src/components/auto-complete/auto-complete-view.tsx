@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import "./auto-complete-styles.css";
-import { Employee } from "../../interfaces/employees";
-import { AutoCompleteViewProps } from "./auto-complete-interface";
+import { Employee } from "../../interfaces/employees.interface";
+import { AutoCompleteViewProps } from "./auto-complete.interface";
 
 const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
   inputValue,
