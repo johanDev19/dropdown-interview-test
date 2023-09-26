@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import "./auto-complete-styles.css";
 import { Employee } from "../../interfaces/employees";
@@ -54,6 +54,27 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
     }
   };
 
+  const handleClickedOutside = (e: MouseEvent) => {
+    const optionsContainer = document.getElementById("options");
+
+    if (
+      optionsContainer?.contains(e.target as Node) ||
+      inputRef.current?.contains(e.target as Node)
+    ) {
+      return;
+    }
+
+    setShowOptions(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickedOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickedOutside);
+    };
+  });
+
   return (
     <div className="autoComplete">
       {showCloseButton && (
@@ -77,7 +98,7 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
       {showOptions && (
         <>
           {filteredData.length > 0 && (
-            <ul className="autoComplete__menu">
+            <ul className="autoComplete__menu" id="options">
               {filteredData.map((item, index) => {
                 const startIndex = item.name
                   .toLowerCase()
