@@ -6,7 +6,9 @@ interface AutoCompleteViewProps {
   inputValue: string;
   filteredData: string[];
   isLoading: boolean;
+  selectedOption?: string;
   onInputChange: (value: string) => void;
+  onOptionSelect: (value: string) => void;
 }
 
 const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
@@ -14,35 +16,66 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
   filteredData,
   isLoading,
   onInputChange,
+  onOptionSelect,
 }) => {
-  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [showOptions, setShowOptions] = useState<boolean>(false);
+  const [showCloseButton, setShowCloseButton] = useState<boolean>(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const handleFocus = () => {
-    setIsInputFocused(true);
+  const focusInput = () => {
+    inputRef.current?.focus();
+    setShowOptions(true);
   };
 
-  const handleBlur = () => {
-    setIsInputFocused(false);
+  const handleOptionSelect = (e: React.MouseEvent<HTMLLIElement>) => {
+    onOptionSelect(e.currentTarget.innerHTML);
+    setShowCloseButton(true);
+    setShowOptions(false);
+  };
+
+  const handleClearInput = () => {
+    onInputChange("");
+    setShowCloseButton(false);
+    focusInput();
+    setShowOptions(false);
+  };
+
+  const handleInputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onInputChange(e.target.value);
+
+    if (!showOptions) {
+      setShowOptions(true);
+    }
   };
 
   return (
     <div className="autoComplete">
+      {showCloseButton && (
+        <div
+          className="autoComplete__close"
+          aria-label="Close"
+          onClick={handleClearInput}
+        >
+          x
+        </div>
+      )}
       <input
+        ref={inputRef}
         className="autoComplete__input"
         type="text"
         value={inputValue}
-        onChange={(e) => onInputChange(e.target.value)}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
+        onChange={handleInputOnChange}
+        onFocus={focusInput}
         placeholder="Type here..."
       />
-      {isLoading && <div>Loading...</div>}
-      {isInputFocused && (
+      {showOptions && (
         <>
           {filteredData.length > 0 && (
             <ul className="autoComplete__menu">
               {filteredData.map((item, index) => (
-                <li key={index}>{item}</li>
+                <li key={index} onClick={handleOptionSelect}>
+                  {item}
+                </li>
               ))}
             </ul>
           )}

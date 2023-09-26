@@ -1,12 +1,23 @@
 .autoComplete {
+  position: relative;
   width: 100%;
   max-width: 400px;
+}
+
+.autoComplete__close {
+  position: absolute;
+  right: 10px;
+  top: 45%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 25px;
+  padding: 5px;
 }
 
 .autoComplete__input {
   width: 100%;
   max-width: 400px;
-  padding: 10px 20px;
+  padding: 10px 40px 10px 10px;
   box-sizing: border-box;
 }
 
@@ -15,6 +26,9 @@
 }
 
 .autoComplete__menu {
+  position: absolute;
+  top: 39px;
+  left: 0;
   width: 100%;
   margin: 0;
   list-style: none;

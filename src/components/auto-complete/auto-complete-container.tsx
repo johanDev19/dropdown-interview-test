@@ -2,24 +2,23 @@ import React, { useState } from "react";
 
 import AutoCompleteView from "./auto-complete-view";
 import mockData from "../../mocks/input-values";
+import { getEmployees } from "../../services/employees";
 
 const AutoCompleteContainer: React.FC = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [filteredData, setFilteredData] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [filteredData, setFilteredData] = useState<string[]>(mockData);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleFilter = async (value: string) => {
     setIsLoading(true);
     setInputValue(value);
 
-    setTimeout(() => {
-      const filtered = mockData.filter((item) =>
-        item.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredData(filtered);
-      setIsLoading(false);
-    }, 500);
+    const employees = await getEmployees();
+    setFilteredData(employees);
+    setIsLoading(false);
   };
+
+  const handleOptionSelect = (value: string) => setInputValue(value);
 
   return (
     <AutoCompleteView
@@ -27,6 +26,7 @@ const AutoCompleteContainer: React.FC = () => {
       filteredData={filteredData}
       isLoading={isLoading}
       onInputChange={handleFilter}
+      onOptionSelect={handleOptionSelect}
     />
   );
 };
