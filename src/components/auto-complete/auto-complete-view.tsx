@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import "./auto-complete-styles.css";
+
 interface AutoCompleteViewProps {
   inputValue: string;
   filteredData: string[];
@@ -24,8 +26,9 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
   };
 
   return (
-    <div>
+    <div className="autoComplete">
       <input
+        className="autoComplete__input"
         type="text"
         value={inputValue}
         onChange={(e) => onInputChange(e.target.value)}
@@ -37,7 +40,7 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
       {isInputFocused && (
         <>
           {filteredData.length > 0 && (
-            <ul>
+            <ul className="autoComplete__menu">
               {filteredData.map((item, index) => (
                 <li key={index}>{item}</li>
               ))}
