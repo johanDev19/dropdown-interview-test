@@ -28,7 +28,7 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
   };
 
   const handleOptionSelect = (e: React.MouseEvent<HTMLLIElement>) => {
-    onOptionSelect(e.currentTarget.innerHTML);
+    onOptionSelect(e.currentTarget.dataset.value || "");
     setShowCloseButton(true);
     setShowOptions(false);
   };
@@ -72,11 +72,28 @@ const AutoCompleteView: React.FC<AutoCompleteViewProps> = ({
         <>
           {filteredData.length > 0 && (
             <ul className="autoComplete__menu">
-              {filteredData.map((item, index) => (
-                <li key={index} onClick={handleOptionSelect}>
-                  {item}
-                </li>
-              ))}
+              {filteredData.map((item, index) => {
+                const startIndex = item
+                  .toLowerCase()
+                  .indexOf(inputValue.toLowerCase());
+                const endIndex = startIndex + inputValue.length;
+
+                return (
+                  <li
+                    key={index}
+                    data-value={item}
+                    onClick={handleOptionSelect}
+                  >
+                    {startIndex > 0 && (
+                      <span>{item.substring(0, startIndex)}</span>
+                    )}
+                    <strong>{item.substring(startIndex, endIndex)}</strong>
+                    {endIndex < item.length && (
+                      <span>{item.substring(endIndex)}</span>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           )}
           {!isLoading && inputValue.length > 0 && filteredData.length === 0 && (

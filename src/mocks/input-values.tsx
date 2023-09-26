@@ -1,6 +1,5 @@
 const mockData: string[] = [
   "John Doe",
-  "Jane Doe",
   "James Smith",
   "Mary Johnson",
   "Michael Brown",
