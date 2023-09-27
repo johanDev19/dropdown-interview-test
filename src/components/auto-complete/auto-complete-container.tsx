@@ -26,6 +26,11 @@ const AutoCompleteContainer: React.FC = () => {
 
   const handleOptionSelect = (value: Employee) => {
     setInputValue(value.name);
+    // here you can do anything with the selected option value
+    // we can just move the getEmployeeList() to a parent component and handle the selected value there and pass the value as a prop to this component
+    // and also set inputValue, filterData, isLoading, onInputChange, onOptionSelect as a props to this component and handle everything in the parent component
+    // but for this test I will leave it here
+    // extra note: we can also use useContext to store the selected value and use it anywhere in the app
   };
 
   const getEmployeeList = async () => {
